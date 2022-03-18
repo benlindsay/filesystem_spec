@@ -1,3 +1,5 @@
+import copy
+
 from ..asyn import AsyncFileSystem
 
 
@@ -209,6 +211,8 @@ class DirFileSystem(AsyncFileSystem):
     def ls(self, path, detail=True, **kwargs):
         ret = self.fs.ls(self._join(path), detail=detail, **kwargs)
         if detail:
+            # Copy before modifying "name" to avoid modifying the cache
+            ret = copy.deepcopy(ret)
             for entry in ret:
                 entry["name"] = self._relpath(entry["name"])
             return ret
