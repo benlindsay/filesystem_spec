@@ -1,3 +1,4 @@
+import copy
 import io
 import logging
 import os
@@ -329,7 +330,7 @@ class AbstractFileSystem(metaclass=_Cached):
         """
         parent = self._parent(path)
         if path.rstrip("/") in self.dircache:
-            return self.dircache[path.rstrip("/")]
+            return copy.deepcopy(self.dircache[path.rstrip("/")])
         try:
             files = [
                 f
